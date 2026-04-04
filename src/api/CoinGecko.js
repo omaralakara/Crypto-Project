@@ -1,12 +1,7 @@
 const BASE_URL = "https://api.coingecko.com/api/v3";
 const API_KEY = import.meta.env.VITE_COINGECKO_KEY;
 
-export const getCoinMarkets = async (
-  currency = "usd",
-  perPage = 20,
-  page = 1,
-  order = "market_cap_desc",
-) => {
+export const getCoinMarkets = async (currency = "usd") => {
   try {
     // We append the API key to every request as a query parameter for the Demo plan
     const response = await fetch(

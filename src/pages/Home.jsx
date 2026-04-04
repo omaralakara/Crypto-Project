@@ -131,33 +131,28 @@ const Home = () => {
           </div>
         </div>
 
-        {/* 2. VIEW TOGGLE (Now on the Right) */}
-        <div className="flex items-center gap-4 w-full md:w-auto justify-end">
-          <span className="text-gray-500 text-[10px] uppercase tracking-[0.2em] font-black">
-            View
-          </span>
-          <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-md">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-500 ${
-                viewMode === "grid"
-                  ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)]"
-                  : "text-gray-500 hover:text-white"
-              }`}
-            >
-              Grid
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={`flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-500 ${
-                viewMode === "list"
-                  ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)]"
-                  : "text-gray-500 hover:text-white"
-              }`}
-            >
-              List
-            </button>
-          </div>
+        <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-md relative">
+          <button
+            onClick={() => setViewMode("grid")}
+            className={`flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+              viewMode === "grid"
+                ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)] scale-105"
+                : "text-gray-500 hover:text-white hover:bg-white/10 hover:scale-105 active:scale-95"
+            }`}
+          >
+            Grid
+          </button>
+
+          <button
+            onClick={() => setViewMode("list")}
+            className={`flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+              viewMode === "list"
+                ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)] scale-105"
+                : "text-gray-500 hover:text-white hover:bg-white/10 hover:scale-105 active:scale-95"
+            }`}
+          >
+            List
+          </button>
         </div>
       </div>
 
@@ -200,7 +195,7 @@ const Home = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
         >
           Previous
         </button>
@@ -210,7 +205,7 @@ const Home = () => {
             <button
               key={num}
               onClick={() => setCurrentPage(num)}
-              className={`w-10 h-10 rounded-xl border transition-all ${
+              className={`w-10 h-10 rounded-xl border transition-all cursor-pointer ${
                 currentPage === num
                   ? "bg-fuchsia-600 border-fuchsia-500 text-white shadow-[0_0_15px_rgba(192,38,211,0.4)]"
                   : "bg-white/5 border-white/10 text-gray-400 hover:border-white/30"
@@ -224,7 +219,7 @@ const Home = () => {
         <button
           onClick={() => setCurrentPage((prev) => prev + 1)}
           disabled={currentPage === 5}
-          className="px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 transition-all"
+          className="px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer"
         >
           Next
         </button>

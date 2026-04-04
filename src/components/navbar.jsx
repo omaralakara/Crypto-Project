@@ -9,18 +9,24 @@ const Navbar = ({ onSearch }) => {
 
       <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Branding */}
-        <Link to="/" className="group">
+        <Link
+          to="/"
+          className="group"
+          onClick={() => {
+            onSearch(""); // ✅ clear search
+            window.scrollTo({ top: 0, behavior: "smooth" }); // ✅ go to top
+          }}
+        >
+          {" "}
           <h1 className="text-2xl font-black tracking-tighter text-white flex items-center gap-1">
             BLOCKS
             <span className="text-fuchsia-500 text-3xl group-hover:text-cyan-400 transition-colors">
               .
             </span>
           </h1>
-
           <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 group-hover:text-fuchsia-400 transition-colors">
             Digital Asset Intelligence
           </p>
-
           <div className="h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 transition-all duration-300"></div>
         </Link>
 
