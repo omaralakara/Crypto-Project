@@ -5,37 +5,55 @@ import CryptoCard from "../components/CryptoCard";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Home = () => {
-  const [coins, setCoins] = useState([]);
+  const [coins, setCoins] = useState([]); //20 to be displayed
   const [loading, setLoading] = useState(true); // Start as true
   const [error, setError] = useState(null); // Track errors
   const [currentPage, setCurrentPage] = useState(1); // Track the page
   const [viewMode, setViewMode] = useState("grid"); // "grid" or "list"
   const [sortBy, setSortBy] = useState("market_cap_desc"); // CoinGecko default
   const [isSorting, setIsSorting] = useState(false);
+  const [allCoins, setAllCoins] = useState([]); //Stores the full 100 coin
 
+  // 1. Fetch data ONCE
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        setIsSorting(true);
-        const data = await getCoinMarkets("usd", 20, currentPage, sortBy);
-        // Smoothly glide back to the top so the user sees the new animation
-
-        if (!data || data.length === 0) {
-          throw new Error("No data received from API");
-        }
-
-        setCoins(data);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } catch (err) {
-        setError(`Failed to fetch crypto data. Please try again later. ${err}`);
-      } finally {
-        setLoading(false); // Stop loading regardless of success or failure
-      }
+    const loadInitialData = async () => {
+      setLoading(true);
+      const data = await getCoinMarkets("usd");
+      setAllCoins(data);
+      setLoading(false);
     };
-    loadData();
-  }, [currentPage, sortBy]);
+    loadInitialData();
+  }, []);
 
+  // 2. Sort and Paginate LOCALLY whenever sortBy or currentPage changes
+  useEffect(() => {
+    if (allCoins.length === 0) return;
+
+    // Create a copy to sort
+    let sorted = [...allCoins];
+
+    // Apply Sorting Logic
+    if (sortBy === "price_desc") {
+      sorted.sort((a, b) => b.current_price - a.current_price);
+    } else if (sortBy === "volume_desc") {
+      sorted.sort((a, b) => b.total_volume - a.total_volume);
+    } else if (sortBy === "id_asc") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      // Default: market_cap_desc
+      sorted.sort((a, b) => b.market_cap - a.market_cap);
+    }
+
+    // Slice for Pagination (show 20 per page)
+    const startIndex = (currentPage - 1) * 20;
+    const paginatedCoins = sorted.slice(startIndex, startIndex + 20);
+
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 50);
+
+    setCoins(paginatedCoins);
+  }, [allCoins, sortBy, currentPage]);
   // 2. Show Error Message
   if (error)
     return (
@@ -83,7 +101,10 @@ const Home = () => {
           <div className="relative group">
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => {
+                setSortBy(e.target.value);
+                setCurrentPage(1); // Reset to page 1 when changing sort order
+              }}
               className="appearance-none bg-white/5 border border-white/10 text-white text-sm rounded-2xl px-5 py-2.5 pr-10 outline-none focus:border-fuchsia-500/50 transition-all cursor-pointer hover:bg-white/10 backdrop-blur-md"
             >
               {/* FIX: We force the background color of options to be dark */}

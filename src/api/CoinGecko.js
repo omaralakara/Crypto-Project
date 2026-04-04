@@ -10,7 +10,7 @@ export const getCoinMarkets = async (
   try {
     // We append the API key to every request as a query parameter for the Demo plan
     const response = await fetch(
-      `${BASE_URL}/coins/markets?vs_currency=${currency}&order=${order}&per_page=${perPage}&page=${page}&sparkline=true&price_change_percentage=24h&x_cg_demo_api_key=${API_KEY}`,
+      `${BASE_URL}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h&x_cg_demo_api_key=${API_KEY}`,
     );
 
     if (!response.ok) {
