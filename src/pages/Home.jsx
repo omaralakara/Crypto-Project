@@ -191,21 +191,25 @@ const Home = () => {
         </AnimatePresence>
       </div>
       {/* PAGINATION BUTTONS */}
-      <div className="flex justify-center items-center gap-4 mt-10">
+      <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 mt-10 px-4">
+        {/* PREVIOUS BUTTON */}
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+          className="px-4 sm:px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-sm sm:text-base"
         >
-          Previous
+          {/* Show arrow on mobile, text on desktop */}
+          <span className="hidden sm:inline">Previous</span>
+          <span className="sm:hidden">&larr;</span>
         </button>
 
-        <div className="flex gap-2">
+        {/* PAGE NUMBERS */}
+        <div className="flex gap-1 sm:gap-2">
           {[1, 2, 3, 4, 5].map((num) => (
             <button
               key={num}
               onClick={() => setCurrentPage(num)}
-              className={`w-10 h-10 rounded-xl border transition-all cursor-pointer ${
+              className={`w-8 h-8 sm:w-10 sm:h-10 text-xs sm:text-sm rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center ${
                 currentPage === num
                   ? "bg-fuchsia-600 border-fuchsia-500 text-white shadow-[0_0_15px_rgba(192,38,211,0.4)]"
                   : "bg-white/5 border-white/10 text-gray-400 hover:border-white/30"
@@ -216,12 +220,14 @@ const Home = () => {
           ))}
         </div>
 
+        {/* NEXT BUTTON */}
         <button
           onClick={() => setCurrentPage((prev) => prev + 1)}
           disabled={currentPage === 5}
-          className="px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer"
+          className="px-4 sm:px-6 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 transition-all cursor-pointer text-sm sm:text-base"
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
+          <span className="sm:hidden">&rarr;</span>
         </button>
       </div>
     </div>

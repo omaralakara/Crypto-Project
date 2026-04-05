@@ -1,18 +1,34 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import CoinDetail from "./pages/CoinDetial";
-import Navbar from "./components/navbar";
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
   return (
-    <BrowserRouter>
-      {/* Navbar stays at the top of every page */}
-      <Navbar onSearch={(val) => console.log("Searching for:", val)} />
+    <Router>
+      <Navbar
+        searchQuery={searchQuery}
+        onSearch={setSearchQuery}
+        setCurrentPage={setCurrentPage}
+      />
+
       <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/coin/:id" element={<CoinDetail />}></Route>
+        <Route
+          path="/"
+          element={
+            <Home
+              searchQuery={searchQuery}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          }
+        />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
+
 export default App;
