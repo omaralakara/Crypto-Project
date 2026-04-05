@@ -18,51 +18,53 @@ const CryptoCard = ({
       className={`group relative bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-300 hover:scale-[1.01] cursor-pointer shadow-2xl overflow-hidden
       ${
         isList
-          ? "flex items-center gap-4 p-3 px-6 rounded-2xl h-16 hover:bg-white/10"
-          : "flex flex-col p-6 rounded-3xl min-h-[220px]"
+          ? "flex items-center justify-between p-2 md:p-4 px-3 md:px-6 rounded-xl md:rounded-2xl min-h-[60px] md:min-h-[80px] hover:bg-white/10"
+          : "flex flex-col p-4 md:p-6 rounded-2xl md:rounded-3xl h-full"
       }`}
     >
-      {/* Interactive Glow - Now works for BOTH modes */}
-      <div className="absolute -inset-px bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition duration-500"></div>
+      {/* Interactive Glow */}
+      <div className="absolute -inset-px bg-gradient-to-r from-fuchsia-500 to-cyan-500 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition duration-500"></div>
 
-      {/* --- 1. RANK & ASSET --- */}
+      {/* --- LEFT SECTION (Rank & Asset) --- */}
       <div
-        className={`relative flex items-center gap-4 ${isList ? "w-[250px] shrink-0" : "mb-4"}`}
+        className={`relative flex items-center gap-2 md:gap-4 ${isList ? "flex-1 min-w-0" : "mb-3"}`}
       >
-        <span className={`${isList ? "text-gray-500 text-xs w-6" : "hidden"}`}>
-          {rank}
-        </span>
+        {isList && (
+          <span className="text-gray-500 text-[10px] w-4 shrink-0 tabular-nums">
+            {rank}
+          </span>
+        )}
 
         <div
-          className={`bg-white/5 rounded-xl border border-white/10 shrink-0 ${isList ? "p-1.5" : "p-2"}`}
+          className={`bg-white/5 rounded-lg border border-white/10 shrink-0 ${isList ? "p-1" : "p-2"}`}
         >
           <img
             src={image}
             alt={name}
-            className={`${isList ? "w-7 h-7" : "w-10 h-10"} object-contain`}
+            className={`${isList ? "w-6 h-6 md:w-8 md:h-8" : "w-10 h-10"} object-contain`}
           />
         </div>
 
-        <div className="truncate">
-          <div className="flex items-center gap-2">
+        <div className="truncate min-w-0">
+          <div className="flex items-center gap-1 md:gap-2">
             <h3
-              className={`font-bold text-white truncate tracking-tight ${isList ? "text-sm" : "text-lg"}`}
+              className={`font-bold text-white truncate leading-tight ${isList ? "text-xs md:text-base" : "text-lg"}`}
             >
               {name}
             </h3>
-            <span className="text-[9px] bg-white/10 text-gray-400 px-1.5 py-0.5 rounded uppercase font-black">
+            <span className="hidden xs:inline-block text-[8px] md:text-[9px] bg-white/10 text-gray-400 px-1.5 py-0.5 rounded uppercase font-black shrink-0">
               {symbol}
             </span>
           </div>
           {!isList && (
-            <p className="text-gray-500 text-xs font-medium mt-1">
+            <p className="text-gray-500 text-[10px] md:text-xs font-medium mt-1">
               Rank #{rank}
             </p>
           )}
         </div>
       </div>
 
-      {/* --- 2. THE CHART (GRID ONLY) --- */}
+      {/* --- MIDDLE SECTION (Sparkline - Only on Tablet/Desktop List or All Grid) --- */}
       {!isList && (
         <div className="relative h-10 w-full my-4 opacity-80 group-hover:opacity-100 transition-opacity">
           {sparkline ? (
@@ -80,32 +82,34 @@ const CryptoCard = ({
         </div>
       )}
 
-      {/* --- 3. PRICE & CHANGE --- */}
+      {/* --- RIGHT SECTION (Price & Change) --- */}
       <div
-        className={`relative flex ${isList ? "flex-grow items-center justify-end gap-12" : "flex-col mt-auto"}`}
+        className={`relative flex ${isList ? "items-center gap-3 md:gap-6 shrink-0" : "flex-col mt-auto"}`}
       >
-        {!isList && (
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-4" />
-        )}
+        {!isList && <div className="w-full h-px bg-white/10 mb-4" />}
 
-        <div className={isList ? "w-32 text-right" : ""}>
-          {!isList && (
-            <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">
-              Price
-            </p>
-          )}
+        <div className="text-right">
           <p
-            className={`text-white font-mono font-bold tracking-tighter ${isList ? "text-sm" : "text-base lg:text-xl"}`}
+            className={`text-white font-mono font-bold tracking-tighter ${isList ? "text-xs md:text-base" : "text-xl"}`}
           >
             ${price?.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </p>
+          {isList && (
+            <div
+              className={`text-[9px] font-bold ${isPositive ? "text-green-400" : "text-red-400"} md:hidden`}
+            >
+              {isPositive ? "▲" : "▼"}
+              {Math.abs(priceChange).toFixed(2)}%
+            </div>
+          )}
         </div>
 
+        {/* Change Badge (Hidden on very small list views, shown on MD+) */}
         <div
-          className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg font-bold border transition-all ${
+          className={`hidden md:flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg font-bold border transition-all ${
             isPositive
-              ? "bg-green-500/10 text-green-400 border-green-500/20 group-hover:bg-green-500/20"
-              : "bg-red-500/10 text-red-400 border-red-500/20 group-hover:bg-red-500/20"
+              ? "bg-green-500/10 text-green-400 border-green-500/20"
+              : "bg-red-500/10 text-red-400 border-red-500/20"
           } ${isList ? "w-20 justify-center" : "w-fit"}`}
         >
           {isPositive ? "▲" : "▼"} {Math.abs(priceChange).toFixed(2)}%
