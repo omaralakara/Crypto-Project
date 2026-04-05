@@ -209,6 +209,7 @@ const Home = ({ searchQuery, onSearch, currentPage, setCurrentPage }) => {
               }}
             >
               <CryptoCard
+                id={coin.id} // ← add this
                 name={coin.name}
                 symbol={coin.symbol}
                 price={coin.current_price}

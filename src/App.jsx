@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
+import CoinDetail from "./pages/CoinDetail";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,6 +28,7 @@ function App() {
             />
           }
         />
+        <Route path="/coin/:id" element={<CoinDetail />} />
       </Routes>
     </Router>
   );

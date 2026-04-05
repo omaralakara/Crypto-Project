@@ -23,3 +23,17 @@ export const getCoinMarkets = async (currency = "usd") => {
     return [];
   }
 };
+
+export const getCoinDetail = async (coinId) => {
+  try {
+    const response = await fetch(
+      // Added &sparkline=true to the URL below
+      `${BASE_URL}/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=true&x_cg_demo_api_key=${API_KEY}`,
+    );
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch coin detail:", error);
+    return null;
+  }
+};
