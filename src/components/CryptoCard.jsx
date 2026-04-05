@@ -106,7 +106,7 @@ const CryptoCard = ({
 
         {/* Change Badge (Hidden on very small list views, shown on MD+) */}
         <div
-          className={`hidden md:flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg font-bold border transition-all ${
+          className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg font-bold border transition-all ${
             isPositive
               ? "bg-green-500/10 text-green-400 border-green-500/20"
               : "bg-red-500/10 text-red-400 border-red-500/20"
