@@ -214,7 +214,6 @@ const Home = ({ searchQuery, onSearch, currentPage, setCurrentPage }) => {
                 price={coin.current_price}
                 image={coin.image}
                 priceChange={coin.price_change_percentage_24h}
-                rank={(currentPage - 1) * 20 + (index + 1)}
                 sparkline={coin.sparkline_in_7d?.price}
                 viewMode={viewMode}
               />
