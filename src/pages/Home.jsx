@@ -92,22 +92,23 @@ const Home = () => {
   return (
     /* 1. Added 'relative' and 'overflow-hidden' to keep the glows in the background */
     <div className="min-h-screen bg-[#050505] relative overflow-hidden text-white p-6 lg:p-12">
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-        {/* 1. SORTING DROPDOWN (Now on the Left) */}
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <span className="text-gray-500 text-[10px] uppercase tracking-[0.2em] font-black">
+      {/* WRAPPER CONTAINER: Stacks on mobile, Rows on Desktop */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full px-4 mb-10">
+        {" "}
+        {/* 1. SORTING DROPDOWN */}
+        <div className="flex items-center justify-between md:justify-start gap-4 w-full md:w-auto">
+          <span className="text-gray-500 text-[10px] uppercase tracking-[0.2em] font-black whitespace-nowrap">
             Sort By
           </span>
-          <div className="relative group">
+          <div className="relative group flex-1 md:flex-none">
             <select
               value={sortBy}
               onChange={(e) => {
                 setSortBy(e.target.value);
-                setCurrentPage(1); // Reset to page 1 when changing sort order
+                setCurrentPage(1);
               }}
-              className="appearance-none bg-white/5 border border-white/10 text-white text-sm rounded-2xl px-5 py-2.5 pr-10 outline-none focus:border-fuchsia-500/50 transition-all cursor-pointer hover:bg-white/10 backdrop-blur-md"
+              className="appearance-none w-full md:w-auto bg-white/5 border border-white/10 text-white text-sm rounded-2xl px-5 py-2.5 pr-10 outline-none focus:border-fuchsia-500/50 transition-all cursor-pointer hover:bg-white/10 backdrop-blur-md"
             >
-              {/* FIX: We force the background color of options to be dark */}
               <option
                 value="market_cap_desc"
                 className="bg-[#0f0f0f] text-white"
@@ -124,20 +125,19 @@ const Home = () => {
                 Name (A-Z)
               </option>
             </select>
-            {/* Custom Arrow Icon so it looks premium */}
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-xs">
               ▼
             </div>
           </div>
         </div>
-
-        <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-md relative">
+        {/* 2. VIEW MODE TOGGLER */}
+        <div className="flex w-full md:w-auto bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-md">
           <button
             onClick={() => setViewMode("grid")}
-            className={`flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+            className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
               viewMode === "grid"
-                ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)] scale-105"
-                : "text-gray-500 hover:text-white hover:bg-white/10 hover:scale-105 active:scale-95"
+                ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)]"
+                : "text-gray-500 hover:text-white"
             }`}
           >
             Grid
@@ -145,10 +145,10 @@ const Home = () => {
 
           <button
             onClick={() => setViewMode("list")}
-            className={`flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+            className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
               viewMode === "list"
-                ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)] scale-105"
-                : "text-gray-500 hover:text-white hover:bg-white/10 hover:scale-105 active:scale-95"
+                ? "bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(192,38,211,0.4)]"
+                : "text-gray-500 hover:text-white"
             }`}
           >
             List
