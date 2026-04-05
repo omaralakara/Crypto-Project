@@ -21,6 +21,7 @@ function App() {
           element={
             <Home
               searchQuery={searchQuery}
+              onSearch={setSearchQuery} // ← add this
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />

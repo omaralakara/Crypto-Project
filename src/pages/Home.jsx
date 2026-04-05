@@ -4,11 +4,10 @@ import CryptoCard from "../components/CryptoCard";
 /* eslint-disable no-unused-vars */
 import { motion, AnimatePresence } from "framer-motion";
 
-const Home = () => {
+const Home = ({ searchQuery, onSearch, currentPage, setCurrentPage }) => {
   const [coins, setCoins] = useState([]); //20 to be displayed
   const [loading, setLoading] = useState(true); // Start as true
   const [error, setError] = useState(null); // Track errors
-  const [currentPage, setCurrentPage] = useState(1); // Track the page
   const [viewMode, setViewMode] = useState("grid"); // "grid" or "list"
   const [sortBy, setSortBy] = useState("market_cap_desc"); // CoinGecko default
   const [isSorting, setIsSorting] = useState(false);
@@ -54,6 +53,15 @@ const Home = () => {
 
     setCoins(paginatedCoins);
   }, [allCoins, sortBy, currentPage]);
+
+  const filteredCoins =
+    searchQuery.trim() === ""
+      ? coins
+      : allCoins.filter(
+          (coin) =>
+            coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            coin.symbol.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
   // 2. Show Error Message
   if (error)
     return (
@@ -156,6 +164,30 @@ const Home = () => {
         </div>
       </div>
 
+      {filteredCoins.length === 0 && searchQuery.trim() !== "" && (
+        <div className="flex flex-col items-center justify-center py-32 gap-6">
+          <div className="text-6xl">🔍</div>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <h2 className="text-white font-black text-xl tracking-tight">
+              No results for{" "}
+              <span className="text-fuchsia-500">"{searchQuery}"</span>
+            </h2>
+            <p className="text-gray-500 text-sm">
+              Try searching by full name or ticker symbol
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              onSearch("");
+              setCurrentPage(1);
+            }}
+            className="px-6 py-2.5 rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-sm font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(192,38,211,0.4)] cursor-pointer"
+          >
+            Back to Home
+          </button>
+        </div>
+      )}
+
       {/* Dynamic Layout Container */}
       <div
         className={`relative z-10 transition-all duration-500 ${
@@ -165,7 +197,7 @@ const Home = () => {
         }`}
       >
         <AnimatePresence mode="wait" custom={currentPage}>
-          {coins.map((coin, index) => (
+          {filteredCoins.map((coin, index) => (
             <motion.div
               key={coin.id}
               initial={{ opacity: 0, y: 20 }}
